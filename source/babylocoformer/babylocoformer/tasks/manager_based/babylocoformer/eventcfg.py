@@ -93,10 +93,10 @@ class EventCfg:
 
     # CoM jitter for all links
     jitter_com = EventTerm(
-        func=mdp.randomize_rigid_body_com,
+        func=mdp.randomize_rigid_body_com_reset,
         mode="reset",
         params={
-            "asset_cfg": SceneEntityCfg("robot", body_names=".*"),
+            "asset_cfg": SceneEntityCfg("robot", body_names="^(?!.*base).*"),
             "com_range": {"x": (-0.005, 0.005), "y": (-0.005, 0.005), "z": (-0.005, 0.005)},
         },
     )
