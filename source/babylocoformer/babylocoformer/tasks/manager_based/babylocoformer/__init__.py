@@ -13,12 +13,23 @@ from . import agents
 
 
 gym.register(
-    id="Template-Babylocoformer-v0",
+    id="Babylocoformer-v0",
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": f"{__name__}.babylocoformer_env_cfg:BabylocoformerEnvCfg",
         "play_env_cfg_entry_point": f"{__name__}.babylocoformer_env_cfg:RobotPlayEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:PPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="Unitree-Go2-Velocity",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.go2_env_cfg:RobotEnvCfg",
+        "play_env_cfg_entry_point": f"{__name__}.go2_env_cfg:RobotPlayEnvCfg",
         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:PPORunnerCfg",
     },
 )

@@ -1,8 +1,10 @@
-import subprocess
-import os
-import numpy as np
 import multiprocessing
+import os
+import subprocess
 from itertools import product
+
+import numpy as np
+
 
 def generate_urdf(params):
     """
@@ -14,13 +16,13 @@ def generate_urdf(params):
     output_path = os.path.join(output_dir, filename)
 
     command = [
-        'xacro',
-        'model/quad.urdf.xacro',
-        f'base_len:={base_len}',
-        f'base_width:={base_width}',
-        f'leg_len:={leg_len}',
-        '-o',
-        output_path
+        "xacro",
+        "model/quad.urdf.xacro",
+        f"base_len:={base_len}",
+        f"base_width:={base_width}",
+        f"leg_len:={leg_len}",
+        "-o",
+        output_path,
     ]
 
     try:
@@ -41,13 +43,13 @@ if __name__ == "__main__":
 
     # Define the range for each parameter
     base_len_range = np.arange(0.25, 0.45, 0.02)
-    base_width_range = np.arange(0.01, 0.21, 0.02)
+    base_width_range = np.arange(0.15, 0.35, 0.02)
     leg_len_range = np.arange(0.15, 0.25, 0.01)
 
     # Create a list of all parameter combinations
     param_combinations = list(product(base_len_range, base_width_range, leg_len_range))
     total_files = len(param_combinations)
-    
+
     print(f"Generating {total_files} URDF files in parallel...")
 
     # Use a process pool to generate URDF files in parallel

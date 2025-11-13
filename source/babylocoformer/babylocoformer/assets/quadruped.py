@@ -4,31 +4,34 @@
 # SPDX-License-Identifier: BSD-3-Clause
 import glob
 import os
-import isaaclab.sim as sim_utils
-from isaaclab.actuators import IdealPDActuatorCfg, ImplicitActuatorCfg
-from isaaclab.assets import ArticulationCfg
-from isaaclab.utils.assets import ISAACLAB_NUCLEUS_DIR
-from babylocoformer.assets.unitree import unitree_actuators
 
 ##
 # Configuration
 ##
 from pathlib import Path
+
+import isaaclab.sim as sim_utils
+from babylocoformer.assets.unitree import unitree_actuators
+from isaaclab.actuators import IdealPDActuatorCfg, ImplicitActuatorCfg
+from isaaclab.assets import ArticulationCfg
+from isaaclab.utils.assets import ISAACLAB_NUCLEUS_DIR
+
 current_file = Path(__file__).resolve()
-project_root = current_file.parents[4]  
+project_root = current_file.parents[4]
 base_dir = project_root / "model" / "usds"
+# base_dir = project_root / "model" / "test_usds"
+
 print(base_dir)
 usd_path = [
-    path for path in glob.glob(os.path.join(base_dir, "**", "*.usd"), recursive=True)
-    if "configuration" not in path
+    path for path in glob.glob(os.path.join(base_dir, "**", "*.usd"), recursive=True) if "configuration" not in path
 ]
 # print(usd_path)
 QUADRUPED_CFG = ArticulationCfg(
-
-    soft_joint_pos_limit_factor = 0.9,
+    soft_joint_pos_limit_factor=0.9,
     spawn=sim_utils.MultiUsdFileCfg(
-        usd_path = [
-            path for path in glob.glob(os.path.join(base_dir, "**", "*.usd"), recursive=True)
+        usd_path=[
+            path
+            for path in glob.glob(os.path.join(base_dir, "**", "*.usd"), recursive=True)
             if "configuration" not in path
         ],
         random_choice=False,
@@ -69,12 +72,4 @@ QUADRUPED_CFG = ArticulationCfg(
             friction=0.01,
         ),
     },
-    # fmt: off TODO
-    # joint_sdk_names=[
-    #     "FR_hip_joint", "FR_thigh_joint", "FR_calf_joint",
-    #     "FL_hip_joint", "FL_thigh_joint", "FL_calf_joint",
-    #     "RR_hip_joint", "RR_thigh_joint", "RR_calf_joint",
-    #     "RL_hip_joint", "RL_thigh_joint", "RL_calf_joint"
-    # ],
-    # fmt: on
 )

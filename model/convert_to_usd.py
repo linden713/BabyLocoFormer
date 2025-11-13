@@ -42,11 +42,14 @@ parser = argparse.ArgumentParser(description="Utility to batch convert URDF file
 parser.add_argument(
     "--input_dir",
     type=str,
-    default="/home/lch/babylocoformer/model/generated_urdfs",
+    default=None,
     help="The path to the directory containing URDF files.",
 )
 parser.add_argument(
-    "--output_dir", type=str, default="/home/lch/babylocoformer/model/usds", help="The path to the directory to store the USD files."
+    "--output_dir",
+    type=str,
+    default=None,
+    help="The path to the directory to store the USD files.",
 )
 parser.add_argument(
     "--merge-joints",
@@ -86,15 +89,12 @@ simulation_app = app_launcher.app
 
 """Rest everything follows."""
 
-import contextlib
-import isaacsim.core.utils.stage as stage_utils
-import omni.kit.app
 import warnings
-from tqdm import tqdm
 
+import omni.kit.app
 from isaaclab.sim.converters import UrdfConverter, UrdfConverterCfg
-from isaaclab.utils.assets import check_file_path
-from isaaclab.utils.dict import print_dict
+
+from tqdm import tqdm
 
 
 def main():
@@ -104,7 +104,7 @@ def main():
     output_dir = os.path.abspath(args_cli.output_dir)
 
     # Find all URDF files
-    urdf_files = glob.glob(os.path.join(input_dir, "*.urdf")) #[:10]
+    urdf_files = glob.glob(os.path.join(input_dir, "*.urdf"))
     if not urdf_files:
         print(f"No URDF files found in {input_dir}")
         return

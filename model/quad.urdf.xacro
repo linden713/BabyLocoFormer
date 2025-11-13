@@ -5,7 +5,7 @@
   <xacro:property name="HALF_PI" value="1.5707963267948966" />
 
   <xacro:arg name="base_len" default="0.35" />
-  <xacro:arg name="base_width" default="0.1" /> <!-- actual 0.0935 + 2 * hip_link_y_origin -->
+  <xacro:arg name="base_width" default="0.25" /> 
   <xacro:arg name="leg_len" default="0.2" /> 
   
   <xacro:arg name="thigh_len" default="$(arg leg_len)" />
@@ -15,11 +15,11 @@
 
   <xacro:property name="hip_x_offset" value="${$(arg base_len) / 2.0}" />
   <xacro:property name="hip_y_offset" value="${$(arg base_width) / 2.0}" />
-  <xacro:property name="hip_link_y_origin" value="0.08" />
+  <xacro:property name="hip_link_y_origin" value="0.00" />
   <xacro:property name="hip_link_cyl_len" value="0.04" />
   <xacro:property name="hip_link_cyl_radius" value="0.046" />
 
-  <xacro:property name="thigh_joint_y_offset" value="0.1" />
+  <xacro:property name="thigh_joint_y_offset" value="0.0" />
   <xacro:property name="thigh_cyl_radius" value="0.02" />
   <xacro:property name="calf_cyl_radius" value="0.012" />
   <xacro:property name="foot_sphere_radius" value="0.022" />

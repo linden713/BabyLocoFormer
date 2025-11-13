@@ -26,7 +26,7 @@ class EventCfg:
             ],
         },
     )
-    
+
     physics_material = EventTerm(
         func=mdp.randomize_rigid_body_material,
         mode="startup",
@@ -45,7 +45,7 @@ class EventCfg:
         mode="reset",
         params={
             "asset_cfg": SceneEntityCfg("robot", body_names="base"),
-            "mass_distribution_params": (3.0, 7.0),
+            "mass_distribution_params": (3.0, 11.0),
             "operation": "abs",
             "recompute_inertia": True,
         },
@@ -55,7 +55,7 @@ class EventCfg:
         mode="reset",
         params={
             "asset_cfg": SceneEntityCfg("robot", body_names=".*_hip"),
-            "mass_distribution_params": (0.5, 1.5),
+            "mass_distribution_params": (0.3, 1.5),
             "operation": "abs",
             "recompute_inertia": True,
         },
@@ -65,7 +65,7 @@ class EventCfg:
         mode="reset",
         params={
             "asset_cfg": SceneEntityCfg("robot", body_names=".*_thigh"),
-            "mass_distribution_params": (1.0, 3.0),
+            "mass_distribution_params": (0.5, 3.0),
             "operation": "abs",
             "recompute_inertia": True,
         },
@@ -75,7 +75,7 @@ class EventCfg:
         mode="reset",
         params={
             "asset_cfg": SceneEntityCfg("robot", body_names=".*_calf"),
-            "mass_distribution_params": (0.5, 1.5),
+            "mass_distribution_params": (0.1, 1.5),
             "operation": "abs",
             "recompute_inertia": True,
         },
@@ -85,7 +85,7 @@ class EventCfg:
         mode="reset",
         params={
             "asset_cfg": SceneEntityCfg("robot", body_names=".*_foot"),
-            "mass_distribution_params": (0.1, 0.3),
+            "mass_distribution_params": (0.01, 0.3),
             "operation": "abs",
             "recompute_inertia": True,
         },
@@ -101,6 +101,15 @@ class EventCfg:
         },
     )
 
+
+    jitter_base_com = EventTerm(
+        func=mdp.randomize_rigid_body_com_reset,
+        mode="reset",
+        params={
+            "asset_cfg": SceneEntityCfg("robot", body_names="base"),
+            "com_range": {"x": (-0.1, 0.1), "y": (-0.1, 0.1), "z": (-0.05, 0.05)},
+        },
+    )
     # reset
     base_external_force_torque = EventTerm(
         func=mdp.apply_external_force_torque,

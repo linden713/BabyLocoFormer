@@ -1,16 +1,9 @@
-# Template for Isaac Lab Projects
+# BabyLocoFormer
 
 ## Overview
 
-This project/repository serves as a template for building projects or extensions based on Isaac Lab.
-It allows you to develop in an isolated environment, outside of the core Isaac Lab repository.
+BabyLocoFormer is an open-source unofficial baby version of LocoFormer. It includes the deployment of TransformerXL (not in its original form, but using flash attention, RoPE, SwiLU, etc.), multi-morph quadruped generation, limited domain randomization, and related training and evaluation.
 
-**Key Features:**
-
-- `Isolation` Work outside the core Isaac Lab repository, ensuring that your development efforts remain self-contained.
-- `Flexibility` This template is set up to allow your code to be run as an extension in Omniverse.
-
-**Keywords:** extension, template, isaaclab
 
 ## Installation
 
@@ -22,117 +15,69 @@ It allows you to develop in an isolated environment, outside of the core Isaac L
 - Using a python interpreter that has Isaac Lab installed, install the library in editable mode using:
 
     ```bash
-    # use 'PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
     python -m pip install -e source/babylocoformer
+    ```
 
-- Verify that the extension is correctly installed by:
+## Usage
 
-    - Listing the available tasks:
+### List available tasks
 
-        Note: It the task name changes, it may be necessary to update the search pattern `"Template-"`
-        (in the `scripts/list_envs.py` file) so that it can be listed.
+```bash
+python scripts/list_envs.py
+```
 
-        ```bash
-        # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-        python scripts/list_envs.py
-        ```
+### Run generation and conversion scripts
 
-    - Running a task:
+```bash
+python model/generate_quad.py
 
-        ```bash
-        python model/generate_quad.py
+python model/convert_to_usd.py.py --headless --input_dir <PATH>  --output_dir <PATH>
+```
 
-        python model/convert_urdf.py --headless
+### Train and evaluate policies
 
-        python scripts/rsl_rl/train.py --task=Template-Babylocoformer-v0
-        ```
+```bash
+python scripts/rsl_rl/train.py --task=Babylocoformer-v0 --num_env 2048 --headless --video
 
-    - Running a task with dummy agents:
+python scripts/rsl_rl/play.py --task=Babylocoformer-v0
 
-        These include dummy agents that output zero or random agents. They are useful to ensure that the environments are configured correctly.
+python scripts/rsl_rl/play.py --task=Unitree-Go2-Velocity
+```
 
-        - Zero-action agent
+## Results
 
-            ```bash
-            # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-            python scripts/zero_agent.py --task=<TASK_NAME>
-            ```
-        - Random-action agent
+Play:
 
-            ```bash
-            # use 'FULL_PATH_TO_isaaclab.sh|bat -p' instead of 'python' if Isaac Lab is not installed in Python venv or conda
-            python scripts/random_agent.py --task=<TASK_NAME>
-            ```
+<p align="center"> <img src="docs/results/babylocoformer_walk.gif" width="400"> <img src="docs/results/babylocoformer_jump.gif" width="400"> </p>
 
-### Set up IDE (Optional)
+Zero shot on Unitree Go2:
 
-To setup the IDE, please follow these instructions:
+Adaption? by locking knee joints.
 
-- Run VSCode Tasks, by pressing `Ctrl+Shift+P`, selecting `Tasks: Run Task` and running the `setup_python_env` in the drop down menu.
-  When running this task, you will be prompted to add the absolute path to your Isaac Sim installation.
-
-If everything executes correctly, it should create a file .python.env in the `.vscode` directory.
-The file contains the python paths to all the extensions provided by Isaac Sim and Omniverse.
-This helps in indexing all the python modules for intelligent suggestions while writing code.
-
-### Setup as Omniverse Extension (Optional)
-
-We provide an example UI extension that will load upon enabling your extension defined in `source/babylocoformer/babylocoformer/ui_extension_example.py`.
-
-To enable your extension, follow these steps:
-
-1. **Add the search path of this project/repository** to the extension manager:
-    - Navigate to the extension manager using `Window` -> `Extensions`.
-    - Click on the **Hamburger Icon**, then go to `Settings`.
-    - In the `Extension Search Paths`, enter the absolute path to the `source` directory of this project/repository.
-    - If not already present, in the `Extension Search Paths`, enter the path that leads to Isaac Lab's extension directory directory (`IsaacLab/source`)
-    - Click on the **Hamburger Icon**, then click `Refresh`.
-
-2. **Search and enable your extension**:
-    - Find your extension under the `Third Party` category.
-    - Toggle it to enable your extension.
-
-## Code formatting
+## 🌟 Contribute & Support
+If you find this project useful or interesting, please consider **starring ⭐ this repository**!
+Contributions, issues, and pull requests are all very welcome — every bit of feedback helps the project grow.
+Let's make BabyLocoFormer even better together!
+### Code formatting
 
 We have a pre-commit template to automatically format your code.
-To install pre-commit:
+To install pre-commit and run:
 
 ```bash
 pip install pre-commit
-```
 
-Then you can run pre-commit with:
-
-```bash
 pre-commit run --all-files
 ```
+### Some final thoughts
+More robot morphologies help stabilize training, and stronger randomization improves adaptation, which makes sense.
 
-## Troubleshooting
+## Acknowledgements
+Thanks to the following projects for their great work and inspiration:
 
-### Pylance Missing Indexing of Extensions
 
-In some VsCode versions, the indexing of part of the extensions is missing.
-In this case, add the path to your extension in `.vscode/settings.json` under the key `"python.analysis.extraPaths"`.
+- [IsaacLab](https://github.com/isaac-sim/IsaacLab): The foundation for training and running codes.
 
-```json
-{
-    "python.analysis.extraPaths": [
-        "<path-to-ext-repo>/source/babylocoformer"
-    ]
-}
-```
+- [Unitree_rl_lab
+](https://github.com/unitreerobotics/unitree_rl_lab): The training and evaluation codes.
 
-### Pylance Crash
-
-If you encounter a crash in `pylance`, it is probable that too many files are indexed and you run out of memory.
-A possible solution is to exclude some of omniverse packages that are not used in your project.
-To do so, modify `.vscode/settings.json` and comment out packages under the key `"python.analysis.extraPaths"`
-Some examples of packages that can likely be excluded are:
-
-```json
-"<path-to-isaac-sim>/extscache/omni.anim.*"         // Animation packages
-"<path-to-isaac-sim>/extscache/omni.kit.*"          // Kit UI tools
-"<path-to-isaac-sim>/extscache/omni.graph.*"        // Graph UI tools
-"<path-to-isaac-sim>/extscache/omni.services.*"     // Services tools
-...
-```
+- [LocoFormer](https://generalist-locomotion.github.io/): The core ideas.

@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-import torch
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
+
+import torch
 
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
@@ -10,6 +11,7 @@ if TYPE_CHECKING:
 from isaaclab.assets import Articulation
 from isaaclab.managers import SceneEntityCfg
 from isaaclab.terrains import TerrainImporter
+
 
 def lin_vel_cmd_levels(
     env: ManagerBasedRLEnv,
@@ -64,11 +66,7 @@ def ang_vel_cmd_levels(
     return torch.tensor(ranges.ang_vel_z[1], device=env.device)
 
 
-def schedule_episode_length(
-    env: ManagerBasedRLEnv,
-    env_ids: Sequence[int],
-    schedule: list[tuple[int, float]]
-) -> None:
+def schedule_episode_length(env: ManagerBasedRLEnv, env_ids: Sequence[int], schedule: list[tuple[int, float]]) -> None:
     """Schedules the episode length over training iterations.
 
     The schedule is a list of tuples, where each tuple contains the number of training iterations and the
@@ -79,4 +77,3 @@ def schedule_episode_length(
         if hasattr(env, "runner") and env.runner is not None:
             if env.runner.current_learning_iteration >= iterations:
                 env.cfg.episode_length_s = length_s
-
