@@ -66,6 +66,7 @@ pre-commit run --files <path/to/file>
 ```
 ### Some final thoughts
 More robot morphologies help stabilize training, and stronger randomization improves adaptation, which makes sense.
+Just messing around. Results are bad, mainly for learning. Trained on a single 5090.
 
 ## Acknowledgements
 Thanks to the following projects for their great work and inspiration:
